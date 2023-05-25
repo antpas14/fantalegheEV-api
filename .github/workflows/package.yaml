@@ -16,14 +16,13 @@ jobs:
       - name: Set up Java
         uses: actions/setup-java@v2
         with:
-          java-version: '17'
-          distribution: 'adopt'
+          java-version: '11'
 
       - name: Build Artifact
         run: mvn clean package
 
       - name: Publish to GitHub Packages
-        run: mvn deploy
+        run: mvn --batch-mode deploy
         env:
           USERNAME: ${{ github.repository_owner }}
           PASSWORD: ${{ secrets.GITHUB_TOKEN }}
