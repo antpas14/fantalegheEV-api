@@ -1,0 +1,30 @@
+openapi: 3.0.0
+info:
+  title: User API
+  version: 1.0.0
+paths:
+  /calculate:
+    get:
+      summary: Calculate
+      operationId: getUsers
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/rank'
+components:
+  schemas:
+    rank:
+      type: object
+      properties:
+        team:
+          type: string
+        evPoints:
+          type: number
+          format: double
+        points:
+          type: integer
