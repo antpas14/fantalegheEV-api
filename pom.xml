@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.gcnc</groupId>
-    <artifactId>fantalegheEV-api</artifactId>
+    <artifactId>fantalegheev-api</artifactId>
     <version>1.0.1</version>
     <build>
         <plugins>
