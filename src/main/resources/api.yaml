@@ -6,7 +6,7 @@ paths:
   /calculate:
     get:
       summary: Calculate
-      operationId: getUsers
+      operationId: calculate
       responses:
         '200':
           description: Successful response
