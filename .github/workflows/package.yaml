@@ -6,24 +6,18 @@ on:
       - main
 
 jobs:
-  build-and-publish:
+  publish:
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: read
+      packages: write
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Set up Java
-        uses: actions/setup-java@v2
+      - name: Set up Java for publishing to GitHub Packages
+        uses: actions/setup-java@v3
         with:
           java-version: '11'
           distribution: 'adopt'
-
-      - name: Build Artifact
-        run: mvn clean package
-
       - name: Publish to GitHub Packages
         run: mvn --batch-mode deploy
         env:
-          USERNAME: ${{ github.repository_owner }}
-          PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
