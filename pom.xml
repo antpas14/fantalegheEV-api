@@ -64,12 +64,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.2.2</version> <!-- Replace with the latest version -->
                 <configuration>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <classpathPrefix>lib/</classpathPrefix>
-                        </manifest>
-                    </archive>
+                    <useDefaultManifestFile>true</useDefaultManifestFile>
                 </configuration>
             </plugin>
         </plugins>
