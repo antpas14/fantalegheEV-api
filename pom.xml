@@ -17,7 +17,7 @@
     </properties>
     <groupId>org.gcnc</groupId>
     <artifactId>fantalegheev-api</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <build>
         <plugins>
             <plugin>
@@ -32,8 +32,8 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <apiPackage>org.gcnc.api</apiPackage>
-                            <modelPackage>org.gcnc.model</modelPackage>
+                            <apiPackage>org.gcnc.fantalegheev-api.api</apiPackage>
+                            <modelPackage>org.gcnc.fantalegheev-api.model</modelPackage>
                             <inputSpec>src/main/resources/api.yaml</inputSpec>
                             <language>java</language>
                             <output>generated-sources/swagger</output>
