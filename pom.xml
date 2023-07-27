@@ -16,7 +16,7 @@
     </properties>
     <groupId>org.gcnc</groupId>
     <artifactId>fantalegheev-api</artifactId>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
     <build>
         <plugins>
             <plugin>
@@ -38,6 +38,11 @@
                             <output>generated-sources/swagger</output>
                             <configOptions>
                                 <modelBuilderSupport>true</modelBuilderSupport>
+                                <additionalModelTypeAnnotations>
+                                    @lombok.Builder
+                                    @lombok.NoArgsConstructor
+                                    @lombok.AllArgsConstructor
+                                </additionalModelTypeAnnotations>
                             </configOptions>
                         </configuration>
                     </execution>
@@ -63,6 +68,13 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>3.2.2</version> <!-- Replace with the latest version -->
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                        </manifest>
+                    </archive>
+                </configuration>
             </plugin>
         </plugins>
     </build>
