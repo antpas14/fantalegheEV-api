@@ -16,13 +16,15 @@
     </properties>
     <groupId>org.gcnc</groupId>
     <artifactId>fantalegheev-api</artifactId>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
+
+
     <build>
         <plugins>
             <plugin>
-                <groupId>io.swagger.codegen.v3</groupId>
-                <artifactId>swagger-codegen-maven-plugin</artifactId>
-                <version>3.0.42</version>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>6.5.0</version>
                 <executions>
                     <execution>
                         <id>generate-sources</id>
@@ -31,13 +33,18 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
+                            <generatorName>spring</generatorName>
+                            <generateApiTests>false</generateApiTests>
+                            <generateModelTests>false</generateModelTests>
                             <apiPackage>org.gcnc.fantalegheev-api.api</apiPackage>
                             <modelPackage>org.gcnc.fantalegheev-api.model</modelPackage>
                             <inputSpec>src/main/resources/api.yaml</inputSpec>
-                            <language>java</language>
                             <output>generated-sources/swagger</output>
                             <configOptions>
-                                <modelBuilderSupport>true</modelBuilderSupport>
+                                <interfaceOnly>true</interfaceOnly>
+                                <serializableModel>true</serializableModel>
+                                <reactive>true</reactive>
+                                <useTags>true</useTags>
                                 <additionalModelTypeAnnotations>
                                     @lombok.Builder
                                     @lombok.NoArgsConstructor
@@ -48,20 +55,44 @@
                     </execution>
                 </executions>
                 <dependencies>
-                    <!-- https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api -->
-                    <!-- Gson -->
+<!--                    &lt;!&ndash; https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api &ndash;&gt;
+                    &lt;!&ndash; Gson &ndash;&gt;
                     <dependency>
                         <groupId>com.google.code.gson</groupId>
                         <artifactId>gson</artifactId>
                         <version>2.10.1</version>
                     </dependency>
 
-                    <!-- Swagger Core Annotations -->
+                    &lt;!&ndash; Swagger Core Annotations &ndash;&gt;
                     <dependency>
                         <groupId>io.swagger.core.v3</groupId>
                         <artifactId>swagger-annotations</artifactId>
                         <version>2.2.11</version>
+                    </dependency>-->
+                    <dependency>
+                        <groupId>javax.validation</groupId>
+                        <artifactId>validation-api</artifactId>
+                        <version>2.0.1.Final</version>
                     </dependency>
+                    <dependency>
+                        <groupId>org.openapitools</groupId>
+                        <artifactId>jackson-databind-nullable</artifactId>
+                        <version>0.2.6</version>
+                    </dependency>
+                    <!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-webflux-ui -->
+                    <dependency>
+                        <groupId>org.springdoc</groupId>
+                        <artifactId>springdoc-openapi-webflux-ui</artifactId>
+                        <version>1.7.0</version>
+                    </dependency>
+
+                    <dependency>
+                        <groupId>org.projectlombok</groupId>
+                        <artifactId>lombok</artifactId>
+                        <version>1.18.26</version>
+                    </dependency>
+
+
                 </dependencies>
             </plugin>
             <plugin>
@@ -80,6 +111,39 @@
     </build>
     <dependencies>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
+            <version>0.2.6</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-webflux-ui -->
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-webflux-ui</artifactId>
+            <version>1.7.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/io.swagger.core.v3/swagger-annotations -->
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>2.2.9</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.26</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>2.0.1.Final</version>
+        </dependency>
+        <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
             <version>1.16.1</version>
@@ -95,11 +159,6 @@
             <groupId>javax.annotation</groupId>
             <artifactId>javax.annotation-api</artifactId>
             <version>1.3.2</version>
-        </dependency>
-        <dependency>
-            <groupId>io.swagger.core.v3</groupId>
-            <artifactId>swagger-annotations</artifactId>
-            <version>${swagger-core-version}</version>
         </dependency>
         <dependency>
             <groupId>com.squareup.okhttp</groupId>
