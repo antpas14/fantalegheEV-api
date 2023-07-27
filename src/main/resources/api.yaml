@@ -5,8 +5,15 @@ info:
 paths:
   /calculate:
     get:
+      parameters:
+        - in: query
+          name: leagueName
+          schema:
+            type: string
       summary: Calculate
       operationId: calculate
+      tags:
+        - Calculate
       responses:
         '200':
           description: Successful response
