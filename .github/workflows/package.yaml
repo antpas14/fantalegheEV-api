@@ -18,6 +18,6 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
       - name: Publish package
-        run: ./mvnw -U -Prelease deploy
+        run: mvn -U -Prelease deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
