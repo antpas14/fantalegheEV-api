@@ -18,7 +18,7 @@
     </properties>
     <groupId>org.gcnc</groupId>
     <artifactId>fantalegheev-api</artifactId>
-    <version>1.0.8</version>
+    <version>1.0.8-SNAPSHOT</version>
 
     <build>
         <plugins>
