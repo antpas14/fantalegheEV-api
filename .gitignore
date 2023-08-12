@@ -2,4 +2,3 @@
 .idea
 target
 settings.xml
-client.go
