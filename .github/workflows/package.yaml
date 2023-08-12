@@ -6,7 +6,7 @@ on:
     branches:
       - main
 jobs:
-  publish:
+  publish_java:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -21,3 +21,28 @@ jobs:
         run: mvn -U -Prelease deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  publish_go:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.21
+
+      - name: Generate code and push changes
+        run: |
+          # Generate the OpenAPI code
+          go install github.com/deepmap/oapi-codegen/cmd/oapi-codegen@latest
+          oapi-codegen -generate types,client -o client.go path/to/your/openapi.yaml
+          
+          # Configure Git user and email
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          
+          # Commit and push changes
+          git add client.go
+          git commit -m "Update generated code"
+          git push
