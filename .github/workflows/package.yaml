@@ -49,4 +49,4 @@ jobs:
           # Commit and push changes
           git add client.go
           git commit -m "Update generated code"
-          git push
+          git push --set-upstream origin $GITHUB_REF
