@@ -33,12 +33,8 @@ jobs:
           go-version: 1.21
 
       - name: Generate code and push changes
-        env:
-          PAT_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         run: |
           # Generate the OpenAPI code
-          echo "First 4 characters of PAT_TOKEN: ${PAT_TOKEN:0:4}"  # Print the first 4 characters
-
           go install github.com/deepmap/oapi-codegen/cmd/oapi-codegen@latest
           oapi-codegen -generate types,client -o client.go src/main/resources/api.yaml 
           
