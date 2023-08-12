@@ -33,6 +33,8 @@ jobs:
           go-version: 1.21
 
       - name: Generate code and push changes
+        env:
+          PAT_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         run: |
           # Generate the OpenAPI code
           go install github.com/deepmap/oapi-codegen/cmd/oapi-codegen@latest
