@@ -18,7 +18,7 @@ jobs:
           java-version: '17'
           distribution: 'adopt'
       - name: Publish package
-        run: mvn -U -Prelease deploy
+        run: mvn -U deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   publish_go:
@@ -36,7 +36,7 @@ jobs:
         run: |
           # Generate the OpenAPI code
           go install github.com/deepmap/oapi-codegen/cmd/oapi-codegen@latest
-          oapi-codegen -generate types,client -o client.go path/to/your/openapi.yaml
+          oapi-codegen -generate types,client -o client.go src/main/resources/api.yaml 
           
           # Configure Git user and email
           git config --global user.name "GitHub Actions"
