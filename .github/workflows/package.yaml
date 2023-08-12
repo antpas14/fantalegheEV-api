@@ -34,6 +34,9 @@ jobs:
 
       - name: Generate code and push changes
         run: |
+          # Cleanup generated OpenAPI code
+          rm client.go
+          
           # Generate the OpenAPI code
           go install github.com/deepmap/oapi-codegen/cmd/oapi-codegen@latest
           oapi-codegen -generate types,client -o client.go src/main/resources/api.yaml 
