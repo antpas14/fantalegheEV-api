@@ -2,3 +2,5 @@
 .idea
 target
 settings.xml
+generated-sources
+server.go
