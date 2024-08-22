@@ -64,10 +64,10 @@ jobs:
         run: npm install @openapitools/openapi-generator-cli
       - name: Generate React code
         run: |
-          openapi-generator-cli generate \
-            -i src/main/resources/api.yaml \
-            -g react \
-            -o src/generated
+         npx openapi-generator-cli generate \
+          -i src/main/resources/api.yaml \
+          -g react \
+          -o src/generated
       - name: Publish to GitHub Packages
         uses: actions/upload-artifact@v3
         with:
