@@ -53,3 +53,24 @@ jobs:
           else
             echo "No changes to commit."
           fi
+          jobs:
+  publish_react:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: npm install
+      - name: Generate React code
+        run: |
+          openapi-generator-cli generate \
+            -i src/main/resources/api.yaml \
+            -g react \
+            -o src/generated
+      - name: Publish to GitHub Packages
+        uses: actions/upload-artifact@v3
+        with:
+          name: generated-code
+          path: src/generated
+      - name: Publish package
+        run: |
+          npm publish --tag latest
