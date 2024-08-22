@@ -66,7 +66,7 @@ jobs:
         run: |
          npx openapi-generator-cli generate \
           -i src/main/resources/api.yaml \
-          -g react \
+          -g typescript-axios \
           -o src/generated
       - name: Publish to GitHub Packages
         uses: actions/upload-artifact@v3
