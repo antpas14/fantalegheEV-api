@@ -61,7 +61,7 @@ jobs:
       - name: Init project
         run: npm init -y
       - name: Install dependencies
-        run: npm install
+        run: npm install @openapitools/openapi-generator-cli
       - name: Generate React code
         run: |
           openapi-generator-cli generate \
