@@ -4,3 +4,5 @@ target
 settings.xml
 generated-sources
 server.go
+src/generated
+openapitools.json
