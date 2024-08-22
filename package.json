@@ -1,0 +1,11 @@
+{
+  "name": "@antpas14/fantalegheev-api",
+  "version": "1.0.0",
+  "description": "This project provides an API for the fantalegheEV project, written using openAPI. It provides simply an enpoint and define a return type",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "antpas14"
+}
