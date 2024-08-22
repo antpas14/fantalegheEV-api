@@ -71,6 +71,3 @@ jobs:
         with:
           name: generated-code
           path: src/generated
-      - name: Publish package
-        run: |
-          npm publish --tag latest
