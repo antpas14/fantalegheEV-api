@@ -57,15 +57,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+          registry-url: 'https://npm.pkg.github.com'
+          # Defaults to the user or organization that owns the workflow file
+          scope: '@organizationName'
       - name: Install dependencies
-        run: npm install @openapitools/openapi-generator-cli
+        run: yarn && npm install @openapitools/openapi-generator-cli
       - name: Generate React code
         run: |
          npx openapi-generator-cli generate \
           -i src/main/resources/api.yaml \
           -g typescript-axios \
           -o src/generated
-      - name: Publish to Github Packages
-        run: npm ci && npm publish
+      - name: Publish package
+        run: yarn publish --access restricted
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
