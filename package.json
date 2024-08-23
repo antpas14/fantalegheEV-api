@@ -9,6 +9,9 @@
   "repository": {
     "url": "https://github.com/antpas14/fantalegheev-api.git"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "keywords": [],
   "author": "antpas14"
 }
