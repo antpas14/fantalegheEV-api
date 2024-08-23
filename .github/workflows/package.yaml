@@ -72,7 +72,9 @@ jobs:
           -g typescript-axios \
           -o src/generated
       - name: Publish package
-        run: yarn publish --access restricted
+        run: yarn publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
 
