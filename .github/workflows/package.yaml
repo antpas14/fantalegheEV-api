@@ -64,7 +64,7 @@ jobs:
           # Defaults to the user or organization that owns the workflow file
           scope: '@organizationName'
       - name: Install dependencies
-        run: yarn && npm install @openapitools/openapi-generator-cli
+        run: npm install @openapitools/openapi-generator-cli
       - name: Generate React code
         run: |
          npx openapi-generator-cli generate \
@@ -72,7 +72,7 @@ jobs:
           -g typescript-axios \
           -o src/generated
       - name: Publish package
-        run: yarn publish
+        run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
