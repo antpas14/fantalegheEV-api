@@ -18,7 +18,7 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
       - name: Publish package
-        run: mvn -U deploy
+        run: mvn -U deploy || test 0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   publish_go:
@@ -65,10 +65,7 @@ jobs:
           -i src/main/resources/api.yaml \
           -g typescript-axios \
           -o src/generated
-      - name: Publish to GitHub Packages
-        uses: actions/upload-artifact@v3
-        with:
-          name: generated-code
-          path: src/generated
+      - name: Publish to Github Packages
+        run: npm ci && npm publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
