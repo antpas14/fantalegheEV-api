@@ -18,16 +18,41 @@ type Rank struct {
 	Team     *string  `json:"team,omitempty"`
 }
 
-// CalculateParams defines parameters for Calculate.
-type CalculateParams struct {
-	LeagueName *string `form:"leagueName,omitempty" json:"leagueName,omitempty"`
+// BadRequestResponse defines model for BadRequestResponse.
+type BadRequestResponse struct {
+	Message *string `json:"message,omitempty"`
 }
+
+// ServerErrorResponse defines model for ServerErrorResponse.
+type ServerErrorResponse struct {
+	Error *string `json:"error,omitempty"`
+}
+
+// SuccessResponse defines model for SuccessResponse.
+type SuccessResponse = []Rank
+
+// GetCalculateParams defines parameters for GetCalculate.
+type GetCalculateParams struct {
+	LeagueName string `form:"leagueName" json:"leagueName"`
+}
+
+// CalculateJSONBody defines parameters for Calculate.
+type CalculateJSONBody struct {
+	Cookies    string `json:"cookies"`
+	LeagueName string `json:"leagueName"`
+}
+
+// CalculateJSONRequestBody defines body for Calculate for application/json ContentType.
+type CalculateJSONRequestBody CalculateJSONBody
 
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
-	// Calculate
+	// Get calculation
 	// (GET /calculate)
-	Calculate(ctx echo.Context, params CalculateParams) error
+	GetCalculate(ctx echo.Context, params GetCalculateParams) error
+	// Calculate
+	// (POST /calculate)
+	Calculate(ctx echo.Context) error
 }
 
 // ServerInterfaceWrapper converts echo contexts to parameters.
@@ -35,21 +60,30 @@ type ServerInterfaceWrapper struct {
 	Handler ServerInterface
 }
 
-// Calculate converts echo context to params.
-func (w *ServerInterfaceWrapper) Calculate(ctx echo.Context) error {
+// GetCalculate converts echo context to params.
+func (w *ServerInterfaceWrapper) GetCalculate(ctx echo.Context) error {
 	var err error
 
 	// Parameter object where we will unmarshal all parameters from the context
-	var params CalculateParams
-	// ------------- Optional query parameter "leagueName" -------------
+	var params GetCalculateParams
+	// ------------- Required query parameter "leagueName" -------------
 
-	err = runtime.BindQueryParameter("form", true, false, "leagueName", ctx.QueryParams(), &params.LeagueName)
+	err = runtime.BindQueryParameter("form", true, true, "leagueName", ctx.QueryParams(), &params.LeagueName)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusBadRequest, fmt.Sprintf("Invalid format for parameter leagueName: %s", err))
 	}
 
 	// Invoke the callback with all the unmarshaled arguments
-	err = w.Handler.Calculate(ctx, params)
+	err = w.Handler.GetCalculate(ctx, params)
+	return err
+}
+
+// Calculate converts echo context to params.
+func (w *ServerInterfaceWrapper) Calculate(ctx echo.Context) error {
+	var err error
+
+	// Invoke the callback with all the unmarshaled arguments
+	err = w.Handler.Calculate(ctx)
 	return err
 }
 
@@ -81,6 +115,7 @@ func RegisterHandlersWithBaseURL(router EchoRouter, si ServerInterface, baseURL 
 		Handler: si,
 	}
 
-	router.GET(baseURL+"/calculate", wrapper.Calculate)
+	router.GET(baseURL+"/calculate", wrapper.GetCalculate)
+	router.POST(baseURL+"/calculate", wrapper.Calculate)
 
 }
