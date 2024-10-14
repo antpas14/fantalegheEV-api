@@ -5,24 +5,49 @@ info:
 paths:
   /calculate:
     get:
+      summary: Get calculation
+      operationId: getCalculate
+      tags:
+        - Calculate
       parameters:
         - in: query
           name: leagueName
           schema:
             type: string
+          required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '500':
+          $ref: '#/components/responses/ServerErrorResponse'
+    post:
       summary: Calculate
       operationId: calculate
       tags:
         - Calculate
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                leagueName:
+                  type: string
+                cookies:
+                  type: string
+              required:
+                - leagueName
+                - cookies
       responses:
         '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/rank'
+          $ref: '#/components/responses/SuccessResponse'
+        '400':
+          $ref: '#/components/responses/BadRequestResponse'
+        '500':
+          $ref: '#/components/responses/ServerErrorResponse'
 components:
   schemas:
     rank:
@@ -35,3 +60,30 @@ components:
           format: double
         points:
           type: integer
+  responses:
+    SuccessResponse:
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/rank'
+    BadRequestResponse:
+      description: Invalid request - missing or invalid parameters
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+    ServerErrorResponse:
+      description: Server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
