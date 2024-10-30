@@ -14,7 +14,8 @@ paths:
           name: leagueName
           schema:
             type: string
-          required: true
+          required:
+            - leagueName
       responses:
         '200':
           $ref: '#/components/responses/SuccessResponse'
@@ -40,7 +41,6 @@ paths:
                   type: string
               required:
                 - leagueName
-                - cookies
       responses:
         '200':
           $ref: '#/components/responses/SuccessResponse'
