@@ -54,7 +54,9 @@ Using the algorithm, we will have a new ranking:
 
 ### Api 
 
-Api needs a `league-name` string, which is the name of the league from [leghe.fantacalcio.it](leghe.fantacalcio.it) returns a list of Rank object. A Rank object has the following attributes
+Api needs an Excel Spreadsheet file related to the Calendar of the league that you want to analyze that can be downloaded [leghe.fantacalcio.it](leghe.fantacalcio.it) (login is necessary). 
+
+This will return a list of Rank object. A Rank object has the following attributes
 
 - name: team name
 - points: points that were achieved in the competition so far
