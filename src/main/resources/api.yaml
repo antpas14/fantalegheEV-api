@@ -4,25 +4,6 @@ info:
   version: 1.0.0
 paths:
   /calculate:
-    get:
-      summary: Get calculation
-      operationId: getCalculate
-      tags:
-        - Calculate
-      parameters:
-        - in: query
-          name: leagueName
-          schema:
-            type: string
-          required:
-            - leagueName
-      responses:
-        '200':
-          $ref: '#/components/responses/SuccessResponse'
-        '400':
-          $ref: '#/components/responses/BadRequestResponse'
-        '500':
-          $ref: '#/components/responses/ServerErrorResponse'
     post:
       summary: Calculate
       operationId: calculate
@@ -31,16 +12,18 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
               type: object
               properties:
-                leagueName:
+                file: # The field for the file upload
                   type: string
-                cookies:
-                  type: string
+                  format: binary
+                # You can include other optional text fields if needed
+                # description:
+                #   type: string
               required:
-                - leagueName
+                - file
       responses:
         '200':
           $ref: '#/components/responses/SuccessResponse'
