@@ -1,6 +1,6 @@
 {
   "name": "@antpas14/fantalegheev-api",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "This project provides an API for the fantalegheEV project, written using openAPI. It provides simply an enpoint and define a return type",
   "main": "src/generated/index.js",
   "scripts": {
