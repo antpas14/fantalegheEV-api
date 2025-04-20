@@ -69,7 +69,7 @@ jobs:
         run: |
          npx openapi-generator-cli generate \
           -i src/main/resources/api.yaml \
-          -g typescript-axios \
+          -g typescript-fetch \
           -o src/generated
       - name: Publish package
         run: npm publish
