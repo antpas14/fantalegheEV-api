@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "es2024", // Or your desired target (e.g., "es6")
+    "module": "esnext", // Or your desired module system (e.g., "commonjs")
+    "outDir": "./dist", // Output directory for compiled JavaScript files
+    "declaration": true, // Generate .d.ts files
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "sourceMap": true
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "test"
+  ]
+}
