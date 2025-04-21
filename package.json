@@ -1,10 +1,20 @@
 {
   "name": "@antpas14/fantalegheev-api",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "This project provides an API for the fantalegheEV project, written using openAPI. It provides simply an enpoint and define a return type",
-  "main": "src/generated/index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
+    "generate-api": "openapi-generator-cli generate -i src/main/resources/api.yaml -g typescript-fetch -o src/generated",
+    "build": "npm run generate-api && tsc -p tsconfig.json",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.19.1",
+    "typescript": "latest"
   },
   "repository": {
     "url": "https://github.com/antpas14/fantalegheev-api.git"

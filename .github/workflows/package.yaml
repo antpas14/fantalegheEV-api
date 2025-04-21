@@ -53,28 +53,24 @@ jobs:
           else
             echo "No changes to commit."
           fi
-  publish_react:
+  publish_ts:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: '20.x'
-          registry-url: 'https://npm.pkg.github.com'
-          # Defaults to the user or organization that owns the workflow file
+          node-version: 'lts/*'
+          registry-url: https://npm.pkg.github.com/
           scope: '@organizationName'
       - name: Install dependencies
-        run: npm install @openapitools/openapi-generator-cli
-      - name: Generate React code
-        run: |
-         npx openapi-generator-cli generate \
-          -i src/main/resources/api.yaml \
-          -g typescript-fetch \
-          -o src/generated
+        run: npm ci
+      - name: Build TypeScript
+        run: npm run build
       - name: Publish package
-        run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm publish --access public
+        working-directory: ./
 
 
