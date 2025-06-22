@@ -6,3 +6,8 @@ generated-sources
 server.go
 src/generated
 openapitools.json
+
+.npmrc
+dist/
+go.sum
+node_modules/

@@ -5,28 +5,113 @@ on:
   push:
     branches:
       - main
+
+env:
+  VERSION_FILE: VERSION
+
 jobs:
+  update_version:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      effective_version: ${{ steps.calculate_version.outputs.effective_version }}
+      version_was_incremented: ${{ steps.calculate_version.outputs.version_was_incremented }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine Version to Use (and Increment if needed)
+        id: calculate_version
+        run: |
+          # Read the current version from the file
+          CURRENT_VERSION=$(cat ${{ env.VERSION_FILE }})
+          echo "Current version from ${VERSION_FILE}: ${CURRENT_VERSION}"
+          
+          # Check if VERSION.txt was modified in the last commit
+          if git diff --name-only HEAD~1 HEAD | grep -q "${{ env.VERSION_FILE }}"; then
+            echo "VERSION.txt was already updated in the last commit. Using this version."
+            # Output the current version as the effective version
+            echo "effective_version=${CURRENT_VERSION}" >> $GITHUB_OUTPUT
+            echo "version_was_incremented=false" >> $GITHUB_OUTPUT # Indicate no new increment/commit needed
+          else
+            echo "VERSION.txt was NOT updated in the last commit. Incrementing it."
+            # Split the version string by dots
+            IFS='.' read -ra ADDR <<< "$CURRENT_VERSION"
+          
+            # Get the last component
+            LAST_INDEX=$(( ${#ADDR[@]} - 1 ))
+            LAST_COMPONENT="${ADDR[LAST_INDEX]}"
+          
+            # Increment the last component
+            NEXT_LAST_COMPONENT=$(( LAST_COMPONENT + 1 ))
+          
+            # Reconstruct the new version string
+            NEW_VERSION=""
+            for i in "${!ADDR[@]}"; do
+                if [ "$i" -eq "$LAST_INDEX" ]; then
+                    NEW_VERSION+="$NEXT_LAST_COMPONENT"
+                else
+                    NEW_VERSION+="${ADDR[i]}."
+                fi
+            done
+          
+            echo "Calculated NEW Version: ${NEW_VERSION}"
+            echo "effective_version=${NEW_VERSION}" >> $GITHUB_OUTPUT 
+            echo "version_was_incremented=true" >> $GITHUB_OUTPUT
+          fi
+        shell: bash
+
+      - name: Update VERSION with New Version
+        if: ${{ steps.calculate_version.outputs.version_was_incremented == 'true' }}
+        run: |
+          echo "${{ steps.calculate_version.outputs.effective_version }}" > ${{ env.VERSION_FILE }}
+          echo "Updated ${VERSION_FILE} to ${{ steps.calculate_version.outputs.effective_version }}"
+
+
+      - name: Configure Git User
+        if: ${{ steps.calculate_version.outputs.version_was_incremented == 'true' }}
+        run: |
+          git config user.name "GitHub Actions Version Bot"
+          git config user.email "actions@github.com"
+
+      - name: Commit and Push VERSION.txt (Conditional)
+        if: ${{ steps.calculate_version.outputs.version_was_incremented == 'true' }}
+        run: |
+          git add ${{ env.VERSION_FILE }}
+          # Use [skip ci] in the commit message to prevent an infinite loop
+          git commit -m "chore(version): Increment build version to ${{ steps.calculate_version.outputs.effective_version }} [skip ci]"
+          git push origin ${{ github.ref }} # Push back to the current branch (e.g., 'main')
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   publish_java:
     runs-on: ubuntu-latest
+    needs: update_version
     permissions:
       contents: read
       packages: write
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-java@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Java Environment
+        uses: actions/setup-java@v3
         with:
           java-version: '21'
           distribution: 'temurin'
-      - name: Publish package
-        run: mvn -U deploy || test 0
+      - name: Build and publish package with correct version
+        run: mvn -U deploy -Drevision=${{ needs.update_version.outputs.effective_version }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   publish_go:
     runs-on: ubuntu-latest
+    needs: update_version
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
+      - name: Checkout repository
+        uses: actions/checkout@v4
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
@@ -48,13 +133,14 @@ jobs:
           # Check if there are changes to commit
           if [[ -n $(git status -s) ]]; then
             git add server.go
-            git commit -m "Update generated code"
+            git commit -m "Update generated code [skip ci]"
             git push --set-upstream origin $GITHUB_REF
           else
             echo "No changes to commit."
           fi
   publish_ts:
     runs-on: ubuntu-latest
+    needs: update_version
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -70,7 +156,10 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npm publish --access public
+        run: |
+          npm version ${{ needs.update_version.outputs.current_version }} --no-git-tag-version --allow-same-version
+          npm ci
+          npm publish --access public
         working-directory: ./
 
 
