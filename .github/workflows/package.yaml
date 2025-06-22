@@ -157,7 +157,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          npm version ${{ needs.update_version.outputs.current_version }} --no-git-tag-version --allow-same-version
+          npm version ${{ needs.update_version.outputs.effective_version }} --no-git-tag-version --allow-same-version
           npm ci
           npm publish --access public
         working-directory: ./
