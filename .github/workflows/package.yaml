@@ -129,6 +129,7 @@ jobs:
           # Configure Git user and email
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
+          git pull origin 
           
           # Check if there are changes to commit
           if [[ -n $(git status -s) ]]; then
