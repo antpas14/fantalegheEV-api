@@ -134,6 +134,7 @@ jobs:
           if [[ -n $(git status -s) ]]; then
             git add server.go
             git commit -m "Update generated code [skip ci]"
+            git pull origin --rebase
             git pull origin # update_version has likely changed the repo since it was pulled first time
             git push --set-upstream origin $GITHUB_REF
           else
