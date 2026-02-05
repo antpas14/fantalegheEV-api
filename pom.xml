@@ -71,7 +71,7 @@
                     <dependency>
                         <groupId>org.openapitools</groupId>
                         <artifactId>jackson-databind-nullable</artifactId>
-                        <version>0.2.8</version>
+                        <version>0.2.9</version>
                     </dependency>
                     <!-- https://mvnrepository.com/artifact/org.springdoc/springdoc-openapi-starter-webmvc-ui -->
                     <dependency>
@@ -114,7 +114,7 @@
         <dependency>
             <groupId>org.openapitools</groupId>
             <artifactId>jackson-databind-nullable</artifactId>
-            <version>0.2.8</version>
+            <version>0.2.9</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/io.swagger.core.v3/swagger-annotations -->
         <dependency>
