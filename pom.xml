@@ -15,7 +15,7 @@
         <junit-version>4.13.2</junit-version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring-boot-version>4.1.1</spring-boot-version>
-        <lombok-version>1.18.46</lombok-version>
+        <lombok-version>1.18.48</lombok-version>
     </properties>
     <groupId>org.gcnc</groupId>
     <artifactId>fantalegheev-api</artifactId>
